@@ -9,7 +9,7 @@ import time
 import warnings
 import urllib3
 from PIL import Image
-icon_image = Image.open(r"C:\Users\ZB06039\OneDrive - Goodyear\Pictures\goodyear.png")
+icon_image = Image.open(rb"C:\Users\ZB06039\OneDrive - Goodyear\Pictures\goodyear.png")
 
 # Suppress SSL warnings (you should use proper SSL verification in production)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
