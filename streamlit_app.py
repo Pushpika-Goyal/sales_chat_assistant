@@ -9,7 +9,6 @@ import time
 import warnings
 import urllib3
 from PIL import Image
-icon_image = Image.open(rb"C:\Users\ZB06039\OneDrive - Goodyear\Pictures\goodyear.png")
 
 # Suppress SSL warnings (you should use proper SSL verification in production)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -843,12 +842,10 @@ def validate_settings():
 def main():
     """Main application function."""
     st.set_page_config(
-        page_title="Sales Chat Assistant", 
-        page_icon=icon_image, 
+        page_title="Sales Chat Assistant",  
         layout="wide",
         initial_sidebar_state="expanded"
     )
-    st.image(icon_image, width=200)
     st.title("Sales Chat Assistant")
     st.markdown("*Ask specific questions about tire...")
 
