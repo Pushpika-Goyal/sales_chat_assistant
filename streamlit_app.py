@@ -570,13 +570,14 @@ def create_targeted_prompt(message: str, chat_history: List[Dict]) -> str:
             return f"In tire size 195/55R16, what does the number 55 specifically represent? Answer format: '55 indicates [SPECIFIC MEANING].'"
         elif '16' in message:
             return f"In tire size 195/55R16, what does the number 16 specifically represent? Answer format: '16 indicates [SPECIFIC MEANING].'"
-    
-    elif 'aspect ratio' in message_lower:
-        return f"What is aspect ratio in tire nomenclature? Explain what it means and how it's calculated. Be specific about the relationship between sidewall height and tire width."
+        elif 'aspect ratio' in message_lower:
+            return f"What is aspect ratio in tire nomenclature? Explain what it means and how it's calculated. Be specific about the relationship between sidewall height and tire width."
     
     elif 'components' in message_lower and 'tire' in message_lower:
         return f"List the main components of a tire and specify what materials each component is made of. Include tread, belts, sidewall, and other major parts."
     
+    elif 'tire wear indicator' in message:
+        return f"1.6mm deep tire wear indicator bars are located at the bottoms of the tread grooves in several locations around the tire, and when the tire is worn to the point where any of them become visibly flushed with the adjacent tread ribs, it is time to replace the tire."
     # Specific prompt templates for different question types
     elif 'load index' in message_lower and question_numbers:
         target_index = question_numbers[0]
