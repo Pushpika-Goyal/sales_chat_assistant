@@ -202,9 +202,9 @@ def display_header():
         # Create header with logo and title
         st.markdown(f"""
         <div class="header-container">
-            <img src="{GOODYEAR_LOGO_URL}" class="logo-img" alt="Goodyear Logo">
+            <img src="{GOODYEAR_LOGO_URL}" alt="Goodyear Logo">
             <div>
-                <h1 class="main-title">Goodyear Sales Chat Assistant</h1>
+                <h1 class="main-title">Sales Chat Assistant</h1>
                 <p class="subtitle">Your Expert Tire Knowledge Assistant</p>
             </div>
         </div>
@@ -252,6 +252,48 @@ def create_session_with_retries():
     session.mount("http://", adapter)
     session.mount("https://", adapter)
     return session
+def create_enhanced_prompt(message: str, chat_history: List[Dict]) -> str:
+    """Create an enhanced prompt that ensures comprehensive tire knowledge retrieval"""
+    
+    # Enhanced context with explicit instructions for knowledge retrieval
+    context = """You are an expert tire consultant with comprehensive knowledge about all aspects of tires. 
+You have access to detailed technical information about:
+- Tire construction and materials (rubber compounds, steel belts, fabric layers, sidewall construction)
+- Manufacturing processes and components
+- Load indices and speed ratings (complete tables and specifications)
+- Tire nomenclature and sizing systems
+- Performance characteristics and applications
+- Safety standards and regulations
+- Maintenance and care instructions
+
+IMPORTANT: Always provide detailed, specific answers using your complete knowledge base. 
+For questions about tire construction or materials, explain the components in detail.
+For technical specifications, provide exact numbers and explanations.
+Answer naturally and conversationally while being comprehensive and accurate."""
+
+    # Add question-specific guidance
+    message_lower = message.lower()
+    
+    if any(word in message_lower for word in ['made of', 'materials', 'construction', 'components', 'rubber', 'steel']):
+        context += """\n\nFor this tire construction/materials question, provide detailed information about:
+- Rubber compounds and their properties
+- Steel belt construction and purpose  
+- Fabric layers (polyester, nylon, etc.)
+- Sidewall materials and construction
+- Tread compound specifications
+- Manufacturing processes involved"""
+    
+    elif any(word in message_lower for word in ['load index', 'load rating', 'weight capacity']):
+        context += "\n\nFor load index questions, provide specific weight capacities and explain the complete load index system."
+    
+    elif any(word in message_lower for word in ['speed rating', 'speed symbol', 'maximum speed']):
+        context += "\n\nFor speed rating questions, provide specific speed limits and explain the complete speed rating system."
+    
+    # Build conversation context
+    recent_context = ""
+    if chat_history:
+        recent_messages = chat_history[-2:] if len(chat_history) > 2 else chat_history
+        recent_context = f"\n\nRecent conversation context: {json.dumps(recent_messages, ensure_ascii=False)}"
 
 def identify_question_type(question: str) -> str:
     """Identify the type of tire question being asked."""
