@@ -31,7 +31,7 @@ if 'ssl_verify' not in st.session_state:
     st.session_state.ssl_verify = False
 
 # Goodyear logo URL
-GOODYEAR_LOGO_URL = "https://logoeps.com/wp-content/uploads/2013/03/goodyear-vector-logo.png"
+GOODYEAR_LOGO_URL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAMAAABC4vDmAAAAflBMVEX///8oU5wkUZsAO5IhT5oYS5iSosaImL8AQpUAPpMMRpcVSZgAQJT8/P0AOJH4+fvg5O7Z3up/kLvByd3l6fEAMo/J0OHs7vQvV56otNDU2ec7XqFLaqdrgrQANZDy9PhWcquzvdZhe7CerMt5h7YAJ4sAHIhDZKQAIolkda2KhPLhAAAEbElEQVR4nO2W25KjOAyGbWNzsEMAm3AmHJKZbL//C64k0r21U53Zqp2Z7Rt9FwkGI/2WZBkhGIZhGIZhGIZhGIZhGIZhGIZhGIZhGIZhGIZhfsgyhNA0Vd22bTmEvv1qPUAey7QbtZYdIHW051+tCIjPrh9WpXR2jqKr9ctXCxJtHEazz52WegwD5LD4akVCbN2lUdJoZa393bVU/H29xfL5+qvOWVtOflIqvg2/WEOIkyTZPhxvfp59v/w13Nc5GZ7XCeE3HPXX8zwMiZHa1j3dxhof/D3Uxzzv/Q3NLnDh74eF5IPqB5I2Y11msvP4VNg5Y/FWQ8Oms06uzmUeBvlqjYHoGHN6Q/9zGMYkMWZMRJwZYy7wTmvTtegjGLkoii4JGplTGH6jVe9owXX4G70ObpxppW5DM2+HppOWph9Gpbsah6mWtheTllmAPJ6klGk/SCWjG4qstrAk6R7norzAI+NFsbusFbOBkdz6/obhaByOziVctmBJ6rlc8W96qSmFp/vHsLFSqk4UTkkbQypQxaUQWsGkQjQRPD0VBYjSE+S3Nnsow3f0VqA39Vju1kAAzvCa80+b9EhKCv2A+sxNPPAWLfsT6lRJaW8f4wmWaGZRgVUDXXCFoRpFe8G/WsQgWa/5ABrVo6ZWvmd1CLQ6XI7czbkHqygq3d7rI3P6fbylKHcoriize7FfKc7XD8UVJgESRd6nvMR1QcQ2dGhKgUGH4c3JQ1SenLV+hBQX1YBSeIni01u83Ocdy6jWp9vzRXGs0j21zZ9rykewpHQukvl+h6q6obXs8A4BC+7Q6ClgbfuA2WYT3qFkcLgHCIlOI4xBMZIovE3zpbKnDn0kdmzJHsqNcM4j37GkbPkie2jJJSI/aa2jwztUy/I4ktqj8a4qVkUaKRhdvYyaXhLNH/3sZOrDGyaQKueKGVlQg5o8NY7hqobDLgQGywKuruTmhSZRd+i9p/2hupJehhXh9pKqhG5BGssOs7hRVtRDlLjcS4sBsYNL+2TF9C+4Pk2xqRQu9VlSqxl7Sh8U4zOv+INeX0CWukrEmBAo7C2j/OC7uOdbSxoDqHCwf++GIoQ5xr1RKmXiOMwxmQoYRqobETKs66P79hb7laPMtuJO4gaMl3lRUcAMDsY6n585zy10qQbLP71jd/QpqtiNNKA8l5TUalQqneHpdgJH9fRcMQXB0kb0tO/xmKjyzq3QzXfqF3U7KfLjFG3q16HKbHqNMjhQsR2Lakz1+LA2pU4sCn929uJMtkO22u8wy16/pZGkgExam2Y9Gr/Id7RxdJ4U51ns562/UIcc8KGrhjPeh50S4YTXx8yyxQeJp2OgjUdnx+T9BMgHP+pxpi+SMnlODeS6PGnV7OE5sbgBMUUth4PvmHgr4uOEa8lDXdH9RQz0/6Oz7z+yTM40+6/+NvhJ1mxq1vDv8/5PNhtvb78hAT/F0vj467/G/0n/qiEzDMMwDMMwDMMwDMMwDMMwDMMwDMMwDMMwDMMgfwLiFEhpRVxfrgAAAABJRU5ErkJggg=="
 
 def set_page_config():
     """Set page configuration with Goodyear branding."""
@@ -529,96 +529,7 @@ def send_to_api(message: str, chat_history: List[Dict]) -> str:
     except Exception as e:
         return f"💥 Unexpected error: {str(e)[:200]}"
 
-def display_sidebar():
-    """Display the sidebar with configuration options."""
-    with st.sidebar:
-        st.markdown('<h2 class="sidebar-header">⚙️ Configuration</h2>', unsafe_allow_html=True)
-        
-        # API Configuration
-        st.subheader("🔗 API Settings")
-        
-        st.session_state.api_url = st.text_input(
-            "API URL",
-            value=st.session_state.api_url,
-            help="Enter the API endpoint URL"
-        )
-        
-        st.session_state.api_token = st.text_input(
-            "API Token",
-            value=st.session_state.api_token,
-            type="password",
-            help="Enter your API authentication token"
-        )
-        
-        # Test connection
-        if st.button("🔍 Test Connection"):
-            with st.spinner("Testing connection..."):
-                success, message = test_api_connection()
-                if success:
-                    st.success(f"✅ {message}")
-                else:
-                    st.error(f"❌ {message}")
-        
-        st.divider()
-        
-        # Additional Settings
-        st.subheader("🛠️ Advanced Settings")
-        
-        st.session_state.ssl_verify = st.checkbox(
-            "Enable SSL Verification",
-            value=st.session_state.ssl_verify,
-            help="Verify SSL certificates (recommended for production)"
-        )
-        
-        st.session_state.debug_mode = st.checkbox(
-            "Debug Mode",
-            value=st.session_state.debug_mode,
-            help="Show debug information"
-        )
-        
-        st.divider()
-        
-        # Quick Actions
-        st.subheader("🚀 Quick Actions")
-        
-        if st.button("🗑️ Clear Chat History"):
-            st.session_state.messages = []
-            st.success("Chat history cleared!")
-            st.rerun()
-        
-        # Example Questions
-        st.subheader("💡 Example Questions")
-        example_questions = [
-            "What is load index 87?",
-            "What does speed symbol V mean?",
-            "What are the main tire components?",
-            "Explain tire size 195/55R16",
-            "What is aspect ratio in tires?"
-        ]
-        
-        for question in example_questions:
-            if st.button(f"📝 {question}", key=f"example_{hash(question)}"):
-                st.session_state.messages.append({"role": "user", "content": question})
-                st.rerun()
 
-def validate_settings():
-    """Validate API settings."""
-    errors = []
-    
-    if not st.session_state.api_url:
-        errors.append("❌ API URL is required!")
-    elif not st.session_state.api_url.startswith(('http://', 'https://')):
-        errors.append("❌ API URL must start with http:// or https://")
-    
-    if not st.session_state.api_token:
-        errors.append("❌ API Token is required!")
-    
-    if errors:
-        for error in errors:
-            st.error(error)
-        return False
-    
-    return True
 
 def main():
     """Main application function."""
